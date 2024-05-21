@@ -1,5 +1,10 @@
-const { Client, GatewayIntentBits, Partials, PermissionsBitField, ChannelType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, InteractionType, User } = require('discord.js');
+const { 
+  Client, GatewayIntentBits, Partials, PermissionsBitField, 
+  ChannelType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, 
+  ButtonStyle 
+} = require('discord.js');
 const { token, prefix } = require('./config.json');
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -12,16 +17,15 @@ const client = new Client({
 });
 
 const allowedRoles = [
-  '986565804051013692',
-  '1077133650732257374',
-  '1037403602127433789' 
+  '1241572376249110680', 
+  '1241574653177364590' 
 ];
 
-const categoryId = '1241718363458375741'; 
+const categoryId = '1241698488102948884'; 
 
 client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}`);
-  client.user.setActivity('💖'); 
+  console.log(`Connecté en tant que ${client.user.tag}`);
+  client.user.setActivity('Préparer vos commandes', { status: 'online', afk: false, status: 'dnd' });
 });
 
 client.on('messageCreate', async message => {
@@ -52,8 +56,7 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.customId === 'create_ticket') {
     const user = interaction.user;
-    const guild = interaction.guild;
-    const creator = await guild.members.fetch(user.id);
+    const guildId = interaction.guildId;
     
     await interaction.reply({
       content: 'Veuillez vérifier vos messages privés pour fournir une raison pour ouvrir un ticket.',
@@ -62,18 +65,52 @@ client.on('interactionCreate', async interaction => {
 
     try {
       const dmChannel = await user.createDM();
-      await dmChannel.send('Veuillez fournir une raison pour ouvrir un ticket :');
+      
+      const reasonEmbed = new EmbedBuilder()
+        .setTitle('Raison du Ticket')
+        .setDescription('Veuillez sélectionner une raison pour ouvrir un ticket :');
 
-      const filter = response => response.author.id === user.id;
+      const row = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder()
+            .setCustomId(`reason_⛏Mineur_${guildId}`)
+            .setLabel('⛏ Mineur')
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
+            .setCustomId(`reason_🌱Farmeur_${guildId}`)
+            .setLabel('🌱 Farmeur')
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
+            .setCustomId(`reason_⚔Hunter_${guildId}`)
+            .setLabel('⚔ Hunter')
+            .setStyle(ButtonStyle.Primary),
+          new ButtonBuilder()
+            .setCustomId(`reason_🎈Autres_${guildId}`)
+            .setLabel('🎈 Autres')
+            .setStyle(ButtonStyle.Primary)   
+        );
 
-      const collected = await dmChannel.awaitMessages({
-        filter,
-        max: 1,
-        time: 60000,
-        errors: ['time']
+      await dmChannel.send({
+        embeds: [reasonEmbed],
+        components: [row]
       });
-      const reason = collected.first().content;
-
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi du DM:', error);
+      await interaction.followUp({ content: 'Une erreur est survenue lors de l\'envoi du message privé.', ephemeral: true });
+    }
+  } else if (interaction.customId.startsWith('reason_')) {
+    const [_, reason, guildId] = interaction.customId.split('_');
+    const user = interaction.user;
+    const guild = client.guilds.cache.get(guildId);
+    
+    if (!guild) {
+      await interaction.reply({ content: 'Impossible de trouver la guilde.', ephemeral: true });
+      return;
+    }
+    
+    try {
+      const creator = await guild.members.fetch(user.id);
+      
       const permissionOverwrites = [
         {
           id: guild.roles.everyone.id,
@@ -121,19 +158,14 @@ client.on('interactionCreate', async interaction => {
         components: [closeRow]
       });
 
-      await dmChannel.send(`Votre ticket a été créé : ${ticketChannel}`);
+      await user.send(`Votre ticket a été créé : ${ticketChannel}`);
       
       await ticketChannel.send(`<@${creator.id}>, <@&1241572376249110680>`)
         .then(msg => msg.delete());
 
-      await interaction.deleteReply();
     } catch (error) {
       console.error('Erreur lors de la création du canal de ticket:', error);
-      if (error.code === 'time') {
-        await user.send('Vous n\'avez pas fourni de raison à temps. Veuillez réessayer.');
-      } else {
-        await user.send('Une erreur est survenue lors de la création du canal de ticket.');
-      }
+      await user.send('Une erreur est survenue lors de la création du canal de ticket.');
     }
   } else if (interaction.customId === 'close_ticket') {
     const channel = interaction.channel;
@@ -145,6 +177,160 @@ client.on('interactionCreate', async interaction => {
       console.error('Erreur lors de la fermeture du canal de ticket:', error);
       await interaction.reply('Une erreur est survenue lors de la fermeture du ticket.');
     }
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}mineur`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Mineur')
+      .setDescription(
+        `
+        Quantité Maximal par personne : 1500
+        
+        <:amethystore:1239655998101127178> Amethyst Ore **→ 18$/u**
+        <:amethystingot:1239656055986851931> Amethyst Ingot **→ 7$/u**
+        <:amethystblock:1239812254090792990> Amethyst Block **→ 63$/u**
+
+        <:titaneore:1239656102153683065> Titane Ore **→ 28$/u**
+        <:titaneingot:1239656146940461143> Titane Ingot **→ 24$/u**
+        <:titaneblock:1239812307769364540> Titane Block **→ 216$/u**
+
+        <:paladiumore:1239656246840131644> Paladium Ore **→ 55$/u**
+        <:paladiumingot:1239656286619041862> Paladium Ingot **→ 32$/u**
+        <:paladiumblock:1239812363213869086> Paladium Block **→ 265$/u**
+
+        <:findium:1239656335826616361> Findium **→ 169$/u**
+        <:trixium:1239656439287382067> Trixium **→ 17$/u**
+        <:mixedendium:1239656381146075146> Endium Mixed **→ 3,4k$/u**
+        <:palavert:1242386497949143142> Green Paladium Ingot **→ 110$/u**
+        <:endiumnugget:1239656479582195723> Endium Nugget **→ 85k$/u**
+        <:or:1242386483730714694> Gold Ingot **→ 8$/u**
+        <:goldblock:1241534011353075835> Gold Block **→ 35$/u**
+        <:fer:1242386470669647933> Iron Ingot  **→ 2$/u**
+        <:goldore:1241529655136092160> Gold Ore **→ 30$/u**
+
+        <:dancarok:1242389113517117450> Dancarok LVL 10 **→ 16k$/u**
+        <:paladiumhopper:1241532941251772426> Paladium Hopper **→ 8k$/u**
+        <:voidstone_minage:1241511614906241198> Minage Voidstone **→ 13k$/u**
+        <:moula_stone:1241513121181470730> Dollars Stone **→ 4k$/u**
+        <:corneenpaladium:1241533540647174165> Paladium Cornes **→ 23k$/u**
+        <:bottle:1242389098317086800> Pré Stack Mineur  **→ 10$/u**
+        <:bottle:1242389098317086800> Bottle 1K XP Mineur **→ 360$/u**
+
+        <:amethystbuilderhand:1240417572705407170> Amethyst Builder Hand **→ 360$/u**
+        <:titanebuilderhand:1240417635334754417> Titane Builder Hand **→ 799$/u**
+        <:paladiumbuilderhand:1240417676325683201> Paladium Builder Hand **→ 3,4k$/u** 
+
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}hunter`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Hunter')
+      .setDescription(
+        `       
+        <:Spawnerr:1242397115855142993> Broken Spawner **→ 6k$/u**
+        <:Spawnerr:1242397115855142993> Spawner Vide **→ 16k$/u**
+        <:Spawner_with_fire:1242397385704079382> T4 **→ Sur mesure**
+        <:palasword:1242396898741190656> Paladium Sword Farm **→ Sur mesure**
+        <:bottle:1242389098317086800> Pré Stack Hunter **→ 18$/u**
+        <:bottle:1242389098317086800> 1K XP Hunter **→ 260$/u**
+        <:bouf:1242396897399013416> Nourriture Non Cuite **→ Sur mesure**
+        <:pierreca:1242400633793937440> Stone De Capture **→ 5k$/u**
+        <:sworddd:1242400635144638484> Capture Sword **→ 8k$/u**
+        <:sworddd:1242400635144638484> Capture Sword (T5 , U3) **→ 11k$/u**
+        <:rod:1242396896077676545> Fishing Rod **→ 150$/u**
+        <:palarod:1242396895033167903>  Paladium Fishing Rod  **→ 300$/u**
+        <:Cod:1242399072355352647> Tout Type De Fish **→ Sur mesure**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}soon`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Bientôt..')
+      .setDescription(
+        `       
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}farmeur`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Farmeur')
+      .setDescription(
+        `       
+        <:dirty:1242406564703240202> Dirt **→ 2$/u**
+        <:Farmland_:1242411117226098688> Dirt Ferty **→ 6$/u**
+        <:glowstonemc:1242406563323318395> Glow Stone **→ 18$/u**
+        <:elevatorr:1242409484127567893> Elevator **→ 120$/u**
+        <:totemmm:1242409483012014101> Totem **→ 6k$/u**
+
+        <:graineble:1242406570164228117> Seed **→ 1$/u**
+        <:pastequemc:1242406566267977798> Pastèque **→ 2$/u**
+        <:watermelone:1241801223418413208> Block de Pastèque **→ 9$/u**
+        <:eggplantseed:1242409485348110376> EggPlante Seed **→ 1$/u**
+        \🍆 EggPlante **→ Sur mesure**
+        <:seedjsp:1242409486245822466> Chervil Seed  **→ 2$/u**
+        <:seedkiwano:1242409487910965299> Kiwano Seed **→ 6$/u**
+        <:kiwano:1242409488963600410> Kiwano **→ 2$/u**
+
+        <:bottle:1242389098317086800> Pré Stack Farmer **→ 25$/u**
+        <:bottle:1242389098317086800> 1K XP Farmeur **→ 49$/u**
+
+        <:seedam:1242409495670427720> Amethyst Seed Planteur **→ 2k$/u**
+        <:seedti:1242409541958631435> Titane Seed Planteur **→ 6k$/u**
+        <:seedpal:1242409492243546162> Paladium Seed Planteur **→ 12k$/u**
+        <:seedpalvert:1242409490716954676> Green Paladium Seed Planteur **→ 21k$/u**
+
+        <:ble:1242406567475806229> Blé **→ 1$/u**
+        <:Breadd:1242406568935428109> Pain **→ 2$/u**
+        <:mixedcoal:1242408044264951908> Mixed Colal **→ Sur mesure**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
   }
 });
 
