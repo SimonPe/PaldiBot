@@ -334,4 +334,177 @@ client.on('messageCreate', async message => {
   }
 });
 
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}baseclaim`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Base Claim')
+      .setDescription(
+        `       
+        <:obsidian:1244229774763884574> Tout Type D'obsienne **→ Sur mesure**
+        <:palaanvil:1244229773694337024> Tout Type D'enclume **→ Sur mesure**
+        <:fakewater:1244229772180197397> Fake Water **→ 40$/u**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}grinder`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Grinder')
+      .setDescription(
+        `       
+        <:grinderr:1244232885515321397> Grinder Complet **→ Sur mesure**
+        <:lavabucket:1244232886920548373> Lava Bucket **→ 50$/u**
+
+        <:paternsocket:1244232887977508915> Socket Patern **→ 400$/u**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}monture`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Montures et Golems')
+      .setDescription(
+        `       
+        <:golemblockk:1244238263280074783> Boite à Golem **→ Sur mesure**
+        <:golemblock:1244238264467062837> Boite à Golem en pièce **→ Sur mesure**
+
+        <:foodgolem:1244238265616302122> Food **→ 2$/u**
+        <:minigolem:1244238266824396821> Mini Golem **→ Sur mesure**
+
+        <:enclotpala:1244238268191739914> Barn Entier **→ Sur mesure**
+        <:monture:1244238269068349463> Monture **→ Sur mesure**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}service`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Services')
+      .setDescription(
+        `       
+        **╰┈➤ Pour les services de construction:**
+        Si les ressources sont fournies il y aura que la mains d'œuvre a payé. 
+
+        <:bottle:1242389098317086800> Construction d'une ferme XP Miner/Farmer **→ Sur mesure**
+        <:drawbridge:1242921394199597178> Construction d'une ferme à Fleurs **→ Sur mesure**
+        <:kiwanoseed:1243207549872771072> Construction d'une ferme à Graines **→ Sur mesure**
+        <:Spawnerr:1242397115855142993> Construction d'une ferme à T4 **→ Sur mesure**
+        <:dyeningmachine:1243214464128647280> Coloration d'un Item **→ Sur mesure**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}alchimist`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Alchimist')
+      .setDescription(
+        `       
+        <:cauldronblock:1242921342215524443> Cauldron Block **→ 950$/u**
+        <:cauldroncore:1242921358741209202> Cauldron Core **→ 800$/u**
+        <:cauldronblock:1242921342215524443> Chaudron Complet **→ 54k$/u**
+
+        <:drawer:1242921411891167262> Drawer remplie de Popy **→ Sur mesure**
+        <:drawer:1242921411891167262> Drawer remplie de Dandelion **→ Sur mesure**
+        <:popy:1242921500730720267> Popy **→ 3$/u**
+        <:dandelion:1242921374821908481>  Dandelions **→ 3$/u**
+
+        <:jacarandalog:1242921464374624388> Jacaranda Logs **→ 3$/u**
+        <:judecresiewood:1242921231582363658> Judecerises Logs **→ 3$/u**
+        <:extractor:1242921439208935546> Extractor **→ 120$/u**
+        <:amethysttank:1242921324108578867> Tank Vide **→ Sur mesure**
+        <:titanetank:1242921558847262840> Tank Rempli **→ Sur mesure**
+
+        <:amethystportail:1242921301715193986> Portail en Amethyst **→ Sur mesure**
+        <:titanepartaille:1242921528384032830> Portail en Titane **→ Sur mesure**
+        <:paladiumportail:1241769399065509910> Portail En Paladium **→ Sur mesure**
+        <:drawbridge:1242921394199597178> Draw Bridge **→ Sur mesure**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+
+  if (message.content.startsWith(`${prefix}outils`)) {
+    const mineurEmbed = new EmbedBuilder()
+      .setTitle('Outils')
+      .setDescription(
+        `       
+        <:paldiumpickaxe:1242937762735325264> Paladium Pickaxe **→ Sur mesure**
+        <:paladiumaxe:1242936962650865704> Paladium Axe **→ Sur mesure**
+        <:paladiumshovel:1242937041071640746> Paladium Shovel **→ Sur mesure**
+        <:paladiumhammer:1242936941809504320> Paladium Hammer **→ Sur mesure**
+
+        <:pickaxeofthegod:1242937721651986492> POG **→ Sur mesure**
+        <:pickaxeofthegod:1242937721651986492> LVL de POG **→ Sur mesure**
+
+        <:amethystescavator:1242937624046338110> Amethyst Escavator **→ 200$/u**
+        <:titaneexcavator:1242937653171847178> Titane Escavator **→ 300$/u**
+        <:paladiumescavator:1242937681709895750> Paladium Escavator **→ 850$/u**
+        
+        **╰┈➤ Si vous souhaitez passer commandes:**
+        **<#1241583608653680722>**
+          `
+      )
+      .setImage('https://cdn.discordapp.com/attachments/949992561278341180/1242393444509421669/Black_Gradient_Minimalist_Corporate_Business_Personal_Profile_New_LinkedIn_Banner.png?ex=664dac8f&is=664c5b0f&hm=6778fa61d7d7905574fa24b1bc6c2dbab3547ea3bcf68b863b16ed5ec8951214&') 
+      .setFooter({ text: 'Cordialement - PaldiShop' });
+
+    await message.channel.send({ embeds: [mineurEmbed] });
+  }
+});
+
 client.login(token);
